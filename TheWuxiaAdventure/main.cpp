@@ -26,9 +26,10 @@ void Attack();//战斗
 void Xianguang();
 void EnemySpawn();//生成敌人
 void Shop();//商店内容
+void Buy();
 float MyStrong;
 float EnemyStrong;
-bool flag,BaiShiorNot,ShimenShaoling;
+bool BaiShiorNot,ShimenShaoling;
 bool BaishiHint,ChenjianHint,XianguangHint;
 char x;
 int main(int argc, const char * argv[]) {
@@ -50,7 +51,6 @@ int main(int argc, const char * argv[]) {
     cout<<"按P进行打坐，尝试运转体内功法"<<endl;
     cout<<"按m查看自己的属性"<<endl;
     cout<<"“提示：所有的输入都需要按回车确定，只能接受单字符输入，有些时候文本会有暂停来体现时间流逝，请参考前后文并且耐心等待，别急着输入“\n";
-    flag=false;
     while (true) {//整个游戏的大循环
         MyStrong=experience*level*0.1-old+10;//随便设定一个力量值
         if (old>=100) {
@@ -123,6 +123,7 @@ void myself(){
     cout<<"你的悟性是"<<WuPoint<<endl;
     cout<<"你现在有"<<JustisePoint<<"正义\n";
     cout<<"你的战斗力是"<<MyStrong<<endl;
+    cout<<"你有"<<Money<<"钱\n";
 };
 void Practise(){
     experience=experience+1*WuPoint;//这里的数字需要给个条件，数学计算之后在说吧
@@ -183,6 +184,8 @@ void Lilian() {
     JustisePoint++;
     cout<<"你出门历练1年，惩戒了几个匪徒，获得了5点经验，因为帮助人们解决问题，你感到自己更加正义了（正义值+1）"<<endl;
     cout<<"你现在有"<<experience<<"点经验值"<<endl;
+    Money+=20;
+    cout<<"当地的官员奖励你了20钱，非常开心\n";
     Upgrate();
 };
 void Upgrate(){
@@ -248,7 +251,7 @@ void Xianguang(){
                 sleep(2);
                 cout<<"你感觉水突然冷了下来，下面一定有什么极寒之物在散发寒冰之气"<<endl;
                 cout<<"你每下潜一寸，便感受到寒气正在侵入你的一寸躯体，不知道应不应该冒险继续下潜"<<endl;
-                cout<<"按y冒险下去，按其他键收手上浮";
+                cout<<"按y冒险下去，按其他键收手上浮\n";
                 cin>>x;
                 if (x=='y') {
                     cout<<"你决定冒险下沉，探索井水的真相"<<endl;
@@ -365,12 +368,41 @@ void Shop(){
     cout<<"商店老板对你上下打量，对你说"<<endl;
     cout<<"小伙子，我看你骨骼惊奇，似乎有武林高手之相，我等的就是你啊！"<<endl;
     cout<<"------------------------------------------------------"<<endl;
-    cout<<"商品价格"<<setw(19)<<"商品名称"<<setw(19)<<"购买条件\n";
-    cout<<"50"<<setw(19)<<"铜制短剑"<<setw(19)<<"lv5\n";
-    cout<<"100"<<setw(19)<<"千年何首乌"<<setw(19)<<"无\n";
-    cout<<"200"<<setw(19)<<"红花人参"<<setw(19)<<"无\n";
-    
+    cout<<"商品价格"<<setw(19)<<"商品名称"<<setw(19)<<"商品序号"<<setw(19)<<"购买条件\n";
+    cout<<"50"<<setw(19)<<"铜制短剑"<<setw(19)<<"1"<<setw(19)<<"lv5\n";
+    cout<<"100"<<setw(19)<<"千年何首乌"<<setw(19)<<"2"<<setw(19)<<"无\n";
+    cout<<"200"<<setw(19)<<"红花人参"<<setw(19)<<"2"<<setw(19)<<"无\n";
+    cout<<"------------------------------------------------------"<<endl;
+    cout<<"要买点什么嘛，按Y掏出钱包\n";
+    cin>>x;
+    if (x=='y')
+        Buy();
+    else
+        cout<<"你摸了摸自己干瘪的钱包"<<endl;
+        cout<<"还是快点走吧"<<endl;
     }
+void Buy(){
+    cout<<"你四下看看，打算买点什么\n";
+    cin>>x;
+    switch (x) {
+        case '1':
+            Money-=50;
+            cout<<"你购买了这把上好的宝剑，花费了50金"<<endl;
+            MyStrong+=50;
+            cout<<"你的战斗力增加了50点，非常高兴\n";
+        case '2':
+            Money-=100;
+            cout<<"你看见了这千年何首乌十分心动，孤注一掷，花了100金买了一根\n";
+            experience+=1000;
+            Upgrate();
+        case '3':
+            Money-=200;
+            cout<<"这红花人参抓住了你的眼镜\n";
+            WuPoint+=1;
+            cout<<"在囫囵吞下之后，你的悟性增加了1点，十分开心\n";
+    }
+    cout<<"在慷慨解囊之后，你神清气爽，匆匆离开了商店\n";
+}
 //(rand() % (b-a))+ a + 1) (a,b]
 //要取得[a,b]的随机整数，使用(rand() % (b-a+1))+ a;
 
